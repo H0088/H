@@ -1,0 +1,29 @@
+
+sudo apt update
+sudo apt install -y flatpak
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+sudo flatpak install flathub com.tencent.WeChat
+
+
+flatpak run --env=GTK_IM_MODULE=fcitx --env=QT_IM_MODULE=fcitx com.tencent.WeChat
+
+
+安装 Fcitx5完成后在终端中运行配置命令打开配置窗口
+
+fcitx5-configtool
+
+
+出现打不开配置窗口输入下面的命令
+全局写入环境变量（对终端启动生效）
+echo 'export QT_QPA_PLATFORM=xcb' >> ~/.bashrc
+source ~/.bashrc
+
+
+终极解决开启 Flatpak 微信的文件权限
+
+运行授权命令
+
+复制并粘贴以下命令到终端中，然后按回车（Enter）：
+
+flatpak override --user com.tencent.WeChat --filesystem=host

@@ -1,0 +1,30 @@
+✅ 完全没问题！这个命名方案很好，简单不容易输错：
+
+把官方恢复镜像重命名为：chromeos.bin 只解压 brunch 的压缩包，chromeos.bin 不要解压，复制到 chromeos 文件夹，和 chromeos-install.sh 放在同一层。
+
+📂 最终目录结构（在 Downloads/chromeos/）
+
+chromeos/ ├─ chromeos-install.sh ├─ （brunch解压出来一堆其他文件） └─ chromeos.bin ← 你改好名字的官方恢复镜像 
+
+📝 打包命令（直接复制用）
+
+先打开 crosh → 输入 shell 进入 chronos 环境，然后：
+
+# 进入这个chromeos文件夹 
+cd ~/MyFiles/Downloads/chromeos 
+
+# 校验文件，确认能看到 chromeos-install.sh 和 chromeos.bin 
+ls 
+
+确认文件都在，执行打包：
+
+sudo bash chromeos-install.sh -src chromeos.bin -dst ~/MyFiles/Downloads/chromeos/chromeos.img -s 16 
+
+-src chromeos.bin：读取你改名后的官方镜像
+
+-dst ...chromeos.img：打包成品镜像就输出到这个文件夹
+
+-s 16：用户数据分区 16G，可以改成 25，按需调整  可以！**不写 `-s` 参数，脚本会使用默认值** 去掉 `-s 数字` 这一段就行
+
+ChromeOS 文件管理器里的「我的文件」，在终端对应的目录叫 MyFiles 图形界面：我的文件 → 下载 → chromeos 终端路径：~/MyFiles/Downloads/chromeos
+文件夹名字大小写！chromeos 全部小写，不要 Chromeos 大写开头
