@@ -1,0 +1,49 @@
+常用蓝牙管理命令备忘录
+
+1. 查看设备与状态
+
+查看当前连接的所有 USB 设备（检查硬件是否识别）：
+
+lsusb
+
+(注：板载蓝牙通常显示为 0bda:c821，外接适配器通常显示为 0bda:a729 等)
+
+查看无线设备（Wi-Fi 及蓝牙 hci 编号）的软/硬阻塞状态：
+
+/usr/sbin/rfkill list
+
+2. 蓝牙设备的屏蔽与开启（通过编号控制）
+
+注意： 每次运行 /usr/sbin/rfkill list 后，设备的编号（如 0, 1, 2）可能会因为插拔顺序发生变化。操作前请先运行 rfkill list 确认当前编号！
+
+关闭（软阻塞）指定的蓝牙或网卡设备：
+
+sudo /usr/sbin/rfkill block <设备编号>
+
+示例： 若 1: hci0 是板载蓝牙，运行 sudo /usr/sbin/rfkill block 1 即可将其关闭。
+
+开启（解除软阻塞）指定的设备：
+
+sudo /usr/sbin/rfkill unblock <设备编号>
+
+示例： 运行 sudo /usr/sbin/rfkill unblock 1 可以重新开启该设备。
+
+💡 核心排障逻辑小结
+
+插上外接适配器 $\rightarrow$ 运行 lsusb 确认硬件正常识别。
+
+运行 /usr/sbin/rfkill list $\rightarrow$ 找出内部冲突的板载蓝牙编号（通常是 hci0）。
+
+执行 sudo /usr/sbin/rfkill block <编号> $\rightarrow$ 屏蔽板载蓝牙，让系统强制独占并稳定运行外接适配器。
+
+
+ 刷新系统总线
+
+重启 D-Bus 服务以唤醒蓝牙
+
+sudo restart dbus
+
+
+
+
+
